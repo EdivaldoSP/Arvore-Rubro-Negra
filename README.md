@@ -1,5 +1,6 @@
 <h1 align="center">Árvore Rubro-Negro</h1>
-<P>Gustavo Rodrigues Barcelos (Refatorado e Expandido)</P>
+<P>Edivaldo Sousa Pinheiro (Refatorado, Expandido e AdaptadoOriginal)</P>
+<p>Gustavo Rodrigues Barcelos (Original - projeto fork - https://github.com/Gustavo01rb/Arvore-Rubro-Negra)</p>
 
 <h2 border="none"> Introdução </h2>
 <p>Árvores do tipo rubro-negra ou vermelho-preto são árvores binárias de busca balanceadas, que, de maneira simplificada, é uma árvore de busca binária que insere e remove de forma inteligente, para assegurar que a árvore permaneça aproximadamente balanceada.</p>
