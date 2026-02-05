@@ -100,7 +100,7 @@ int main(){
 
 int menu(){
     int x;
-    printf("\n\n\n╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮");
+    printf("\n\n\n------------------------------------------------------------------");
     printf("\n\n\t\t  MENU ARVORE RUBRO-NEGRA");
     printf("\n\n\t Operacoes:");
     printf("\n\t   [1] -> Inserir Elementos (Modo Interativo)");
@@ -110,7 +110,7 @@ int menu(){
     printf("\n\t   [4] -> Grafica (Cores)");
     printf("\n\t   [5] -> Visualizacao Web (Navegador)");
     printf("\n\n\t   [0] -> Sair");
-    printf("\n╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯ ");
+    printf("\n--------------------------------------------------------------------");
     
     printf("\n\n\tEscolha uma opcao: ");
     scanf("%d",&x);
