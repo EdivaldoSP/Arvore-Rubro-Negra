@@ -3,142 +3,116 @@
 #include "Insere.h"
 #include "Rotacoes.h"
 #include "Remove.h"
-
+#include "Visualizer.h"
 
 int menu();
 
 int main(){
 
     int escolha = 0;
-    int aux = 0;
-    int dados1[] = {1,2,3,4,5,6,7,8,9,10};
-    int dados2[] = {10,9,8,7,6,5,4,3,2,1};
-    int dados3[] = {56,45,65,23,70,98,100,32,10,50};
-    
     capsule temp;
     Tree *raiz;
 
     raiz = CreateTree();
     
-    while(escolha != 9){
+    // Loop do Menu Principal
+    while(escolha != 99){ 
         escolha = menu();
         switch(escolha){
             
             case 1:
-                printf("\tInforme o numero que deseja inserir: ");
-                scanf("%d",&temp.key);
-                Insere(&raiz,raiz,temp);
-                printf("\n\n\n\n");
-                draw_arvore_hor(raiz,true);
+                // Modo de Inserção
+                {
+                    int continuar = 1;
+                    char ver_arvore;
+                    
+                    printf("\n\n--- Modo de Insercao (Digite 0 para sair do modo) ---\n");
+                    
+                    while(continuar) {
+                        printf("\nInforme o valor para inserir: ");
+                        scanf("%d", &temp.key);
+                        
+                        // Encerra inserção
+                        if (temp.key == 0) {
+                            continuar = 0;
+                            printf("\n\t>>> Insercoes finalizadas com sucesso! <<<\n");
+                            
+                            char ver_web;
+                            printf("\n\tDeseja visualizar a arvore via web? (s/n): ");
+                            scanf(" %c", &ver_web);
+                            if (ver_web == 's' || ver_web == 'S') {
+                                ShowWebTree(raiz);
+                            }
+                            
+                            break;
+                        }
+
+                        Insere(&raiz, raiz, temp);
+                        printf("\n\t[SUCESSO] Elemento %d inserido na arvore.\n", temp.key);
+                    }
+                }
             break;
             
             case 2:
-                printf("\n\tInforme a quantidade de numeros que deseja inserir: ");
-                scanf("%d",&aux);
-                while( aux <= 0){
-                    printf("\n\tValor invalido, tente somente numeros maiores que 0.\n");
-                    scanf("%d",&aux);
-                }
+                // Remoção
+                printf("\n\tInforme o elemento que deseja Remover: ");
+                scanf("%d",&temp.key);
+                RemoveTree(&raiz,temp);
+                printf("\n\t(Elemento removido. Rebalanceamento aplicado se necessario)\n");
                 
-                printf("\n\tInforme os numeros e em seguida aperte enter. Ira terminar ao atingir %d numeros coletados\nInforme o primeiro: ",aux);
-                for(int i = 0; i < aux; i++){ 
-                    scanf("%d",&temp.key);
-                    Insere(&raiz,raiz,temp);
+                char ver_web_rem;
+                printf("\n\tDeseja visualizar a arvore via web? (s/n): ");
+                scanf(" %c", &ver_web_rem);
+                if (ver_web_rem == 's' || ver_web_rem == 'S') {
+                    ShowWebTree(raiz);
                 }
             break;
-            
+
             case 3:
-                printf("\n\t Os seguintes vetores estao pre-definifdos:");
-                printf("\n\t Vetor 1: ");
-                for(int i = 0; i < 10; i++) printf("[%d] ",dados1[i]);
-                printf("\n\t Vetor 2: ");
-                for(int i = 0; i < 10; i++) printf("[%d] ",dados2[i]);
-                printf("\n\t Vetor 3: ");
-                for(int i = 0; i < 10; i++) printf("[%d] ",dados3[i]);
-                printf("\n\t Escolha um dos vetores: ");
-                scanf("%d",&aux);
-
-                if(aux == 1)
-                    for(int i = 0; i < 10; i++){
-                        temp.key = dados1[i];
-                        Insere(&raiz,raiz,temp);
-                    }
-                else if(aux == 2)
-                    for(int i = 0; i < 10; i++){
-                        temp.key = dados2[i];
-                        Insere(&raiz,raiz,temp);
-                    }
-                else
-                    for(int i = 0; i < 10; i++){
-                        temp.key = dados3[i];
-                        Insere(&raiz,raiz,temp);
-                    }
-
+                // Exibição Terminal (Números)
                 printf("\n\n\n\n");
                 draw_arvore_hor(raiz,true);
             break;
 
             case 4:
-                printf("\n\n\n\n");
-                draw_arvore_hor(raiz,true);
-            break;
-
-            case 5:
+                // Exibição Terminal (Cores)
                 printf("\n\n\n\n");
                 draw_arvore_hor(raiz,false);
             break;
-
-            case 6:
-                printf("\n\t Metodos de exibicao:");
-                printf("\n\n\t  Central: ");
-                Central(&(*raiz));
-                printf("\n\t  Pre-Ordem: ");
-                PreOrdem(&(*raiz));
-                printf("\n\t  Pos-Ordem: ");
-                PosOrdem(&(*raiz));
-
-            break;
-
-            case 7:
-                printf("\n\tInforme o elemento que deseja procurar: ");
-                scanf("%d",&temp.key);
-                Pesquisa(&raiz, temp);
-            break;
             
-            case 8:
-                printf("\n\tInforme o elemento que deseja Remover: ");
-                scanf("%d",&temp.key);
-                RemoveTree(&raiz,temp);
+            case 5:
+               // Visualização Web
+               ShowWebTree(raiz);
             break;
-            case 9:
-                printf("\n\tAte mais!!\n\n\n ");
+
+            case 0:
+                printf("\n\tEncerrando programa. Ate mais!!\n\n\n ");
+                escolha = 99;
             break;
+
             default:
                 printf("\n\nOpcao invalida.");
 
         }
     }    
+    return 0;
 }
 
 int menu(){
     int x;
     printf("\n\n\n╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮");
-    printf("\n\n\t\t  Menu de opcoes ");
-    printf("\n\n\t Insercoes:");
-    printf("\n\t   [1]-> Inserir um elemento.");
-    printf("\n\t   [2]-> Inserir varios elementos.");
-    printf("\n\t   [3]-> Inserir Elementos pre definidos");
-    printf("\n\n\t Exibicao:");
-    printf("\n\t   [4]-> Exibir arvore desenhada com numeros.");
-    printf("\n\t   [5]-> Exibir arvore desenhada com cores.");
-    printf("\n\t   [6]-> Exibir metodos: Central, Pre-ordem e Pos-Ordem.");
-    printf("\n\t   [7]-> Procurar e exibir um elemento em especifico");
-    printf("\n\n\t Remocao:");
-    printf("\n\t   [8]-> Remover um elemento");
-    printf("\n\n\t   [9]-> Sair");
+    printf("\n\n\t\t  MENU ARVORE RUBRO-NEGRA");
+    printf("\n\n\t Operacoes:");
+    printf("\n\t   [1] -> Inserir Elementos (Modo Interativo)");
+    printf("\n\t   [2] -> Remover Elemento");
+    printf("\n\n\t Visualizacao:");
+    printf("\n\t   [3] -> Grafica (Numeros)");
+    printf("\n\t   [4] -> Grafica (Cores)");
+    printf("\n\t   [5] -> Visualizacao Web (Navegador)");
+    printf("\n\n\t   [0] -> Sair");
     printf("\n╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯ ");
     
-    printf("\n\n\tInforme sua escolha: ");
+    printf("\n\n\tEscolha uma opcao: ");
     scanf("%d",&x);
     return x;
 }

@@ -3,8 +3,7 @@
 
 #include "Arvore.h"
 #include "Rotacoes.h" 
-#include"Exibe.h"
-
+#include "Exibe.h"
 
 void Caso1(Tree **no);
 void Caso2(Tree **no);
@@ -20,13 +19,14 @@ void Insere(Tree **t, Tree *pai, capsule c){
         (*t)->dir = NULL;
         (*t)->pai = pai;
         (*t)->cor = false;
+        Caso1(t); // Rebalanceamento inicial
     }else{
         if((*t)->dado.key > c.key){ Insere(&(*t)->esq, (*t), c); }
         if((*t)->dado.key < c.key){ Insere(&(*t)->dir, (*t), c); }
     }
-   Caso1(t);
 }
 
+// Caso 1: Nó na raiz deve ser Preto
 void Caso1(Tree **t){
     Tree *no = (*t);
     if(no->pai == NULL)
@@ -35,6 +35,7 @@ void Caso1(Tree **t){
         Caso2(t);
 }
 
+// Caso 2: Pai Preto (OK)
 void Caso2(Tree **t){
     Tree *no = (*t);
     if(no->pai->cor == true)
@@ -43,6 +44,7 @@ void Caso2(Tree **t){
         Caso3(t);
 }
 
+// Caso 3: Pai Vermelho e Tio Vermelho (Recolorir + Recursão Avô)
 void Caso3(Tree **t){
     Tree *no = (*t);
     Tree *ti = tio(no);
@@ -56,6 +58,7 @@ void Caso3(Tree **t){
         Caso4(t);
 }
 
+// Caso 4: Zig-Zag (Rotação Dupla / Simples Ajuste)
 void Caso4(Tree **t){
     Tree *no = (*t);
     Tree *vo = avo(no);
@@ -66,6 +69,7 @@ void Caso4(Tree **t){
     Caso5(&no);
 }
 
+// Caso 5: Linha Reta (Rotação + Recolorir)
 void Caso5(Tree **t){
     Tree *no = (*t);
     Tree *vo = avo(no);
@@ -73,8 +77,7 @@ void Caso5(Tree **t){
 
     if(vo == NULL ) return;
 
-    
-    if(vo->pai != NULL){ 
+    if(vo != NULL){ 
         vo->cor = false;
         pai->cor = true;
     }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { font-family: sans-serif; text-align: center; }
+svg { border: 1px solid #ccc; background-color: #f9f9f9; }
+.node circle { stroke: #333; stroke-width: 2px; transition: all 0.5s; }
+.node text { font: 14px sans-serif; fill: white; font-weight: bold; pointer-events: none; text-anchor: middle; alignment-baseline: middle; }
+.link { fill: none; stroke: #555; stroke-width: 2px; transition: all 0.5s; }
+</style>
+</head>
+<body>
+<h2>Visualizacao Rubro-Negra (Final)</h2>
+<div><svg width='1000' height='600' id='treeSvg'></svg></div>
+<script>
+const treeData = [
+{ key: 4, color: 'black', parent: -999999 },
+{ key: 2, color: 'red', parent: 4 },
+{ key: 1, color: 'black', parent: 2 },
+{ key: 3, color: 'black', parent: 2 },
+{ key: 6, color: 'red', parent: 4 },
+{ key: 5, color: 'black', parent: 6 },
+{ key: 7, color: 'black', parent: 6 },
+];
+const svg = document.getElementById('treeSvg');
+const width = +svg.getAttribute('width');
+const height = +svg.getAttribute('height');
+const nodeRadius = 20;
+const levelHeight = 60;
+const nodesMap = {};
+let root = null;
+treeData.forEach(d => {
+  nodesMap[d.key] = { ...d, children: [], x: 0, y: 0 };
+});
+treeData.forEach(d => {
+  if (d.parent === -999999) {
+    root = nodesMap[d.key];
+  } else {
+    if (nodesMap[d.parent]) {
+       if (d.key < d.parent) nodesMap[d.parent].children.push(nodesMap[d.key]);
+       else nodesMap[d.parent].children.push(nodesMap[d.key]);
+       // Ordenar filhos para garantir esq/dir visualmente
+       nodesMap[d.parent].children.sort((a,b) => a.key - b.key);
+    }
+  }
+});
+function assignCoordinates(node, depth, minX, maxX) {
+  if (!node) return;
+  node.y = depth * levelHeight + 50;
+  node.x = (minX + maxX) / 2;
+  if (node.children.length > 0) {
+     const mid = (minX + maxX) / 2;
+     // Se tem 1 filho, precisamos saber se é esq ou dir pela chave
+     node.children.forEach(child => {
+        if (child.key < node.key) assignCoordinates(child, depth+1, minX, mid);
+        else assignCoordinates(child, depth+1, mid, maxX);
+     });
+  }
+}
+if (root) assignCoordinates(root, 0, 0, width);
+function drawLinks(node) {
+  if(!node) return;
+  node.children.forEach(child => {
+     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+     line.setAttribute('x1', node.x); line.setAttribute('y1', node.y);
+     line.setAttribute('x2', child.x); line.setAttribute('y2', child.y);
+     line.setAttribute('class', 'link');
+     svg.appendChild(line);
+     drawLinks(child);
+  });
+}
+function drawNodes(node) {
+  if(!node) return;
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('class', 'node');
+  g.setAttribute('transform', `translate(${node.x},${node.y})`);
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('r', nodeRadius);
+  circle.setAttribute('fill', node.color);
+  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  text.textContent = node.key;
+  text.setAttribute('dy', '.3em');
+  g.appendChild(circle);
+  g.appendChild(text);
+  svg.appendChild(g);
+  node.children.forEach(drawNodes);
+}
+if(root) { drawLinks(root); drawNodes(root); }
+</script>
+</body>
+</html>
