@@ -1,5 +1,5 @@
 <h1 align="center">Árvore Rubro-Negro</h1>
-<P>Edivaldo Sousa Pinheiro (Refatorado, Expandido e AdaptadoOriginal)</P>
+<P>Edivaldo Sousa Pinheiro (Refatorado, Expandido e Adaptado)</P>
 <p>Gustavo Rodrigues Barcelos (Original - projeto fork - https://github.com/Gustavo01rb/Arvore-Rubro-Negra)</p>
 
 <h2 border="none"> Introdução </h2>
