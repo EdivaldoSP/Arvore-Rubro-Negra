@@ -100,11 +100,19 @@ void RBDeleteFixup(Tree **raiz, Tree *x, Tree *x_pai) {
             if (w != NULL && w->cor == false) {
                 w->cor = true;
                 x_pai->cor = false;
+                
+                bool is_root = (x_pai->pai == NULL); // Check if rotation will occur at root (Swap Data)
+
                 RSE(&w); 
                 if (w->pai == NULL) *raiz = w; 
                 
-                x_pai = w->esq;
-                w = x_pai->dir; 
+                if (is_root) {
+                    x_pai = w;
+                    w = x_pai->dir;
+                } else {
+                    x_pai = w->esq;
+                    w = x_pai->dir; 
+                }
             }
             
             if (w == NULL) {
@@ -145,11 +153,19 @@ void RBDeleteFixup(Tree **raiz, Tree *x, Tree *x_pai) {
             if (w != NULL && w->cor == false) {
                 w->cor = true;
                 x_pai->cor = false;
+                
+                bool is_root = (x_pai->pai == NULL); // Check if rotation will occur at root (Swap Data)
+
                 RSD(&w); 
                 if (w->pai == NULL) *raiz = w;
                 
-                x_pai = w->dir;
-                w = x_pai->esq;
+                if (is_root) {
+                    x_pai = w;
+                    w = x_pai->esq;
+                } else {
+                    x_pai = w->dir;
+                    w = x_pai->esq;
+                }
             }
             
             if (w == NULL) {
